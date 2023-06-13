@@ -1,2 +1,12 @@
-# forum
-Building a forum that runs off of rqlite. Curious to see what edge apps look like for low traffic sites.
+# Forum
+
+Use `rqlite` to provide an edge forum software experience. The idea is the forum
+(and software) just needs to be eventually consistent. In the case of a forum,
+it means it will be _eventually read_.
+
+## Development
+
+```bash
+brew bundle
+task
+```

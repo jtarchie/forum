@@ -1,0 +1,25 @@
+version: '3'
+
+tasks:
+  build: go build ./...
+  generate: go generate ./...
+  lint:
+    cmds:
+    - gofmt -w .
+    - golangci-lint run --fix --timeout "10m"
+    - deno fmt README.md
+  run:
+    cmds:
+    - task: generate
+    - task: lint
+    - rqlited -node-id 1 node1 &
+    - bash -c 'while ! httping -qc1 http://localhost:4001/status ; do sleep 1 ; done'
+    - defer: pkill -9 -f rqlited
+    - task: build
+    - go run ./... server --port 8080
+  default:
+    cmds:
+    - task: generate
+    - task: lint
+    - task: build
+    - go test -cover -race ./...

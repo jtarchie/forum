@@ -1,0 +1,34 @@
+{% import "github.com/jtarchie/forum/services" %}
+
+{% stripspace %}
+  {% func Forums(forums services.Forums) %}
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+      <title>List Forums</title>
+    </head>
+    <body>
+      <main class="container">
+        <h1>List Forums</h1>
+        {%= listForums(forums, 0) %}
+      </main>
+    </body>
+  </html>
+  {% endfunc %}
+
+  {% func listForums(forums services.Forums, parentID int64) %}
+    {% for _, forum := range forums %}
+      {% if forum.ParentID == parentID %}
+        <article>
+          <header><a href="#">{%s forum.Name %}</a></header>
+          {%s forum.Description %}
+          <!-- if children -->
+          {%= listForums(forums, forum.ID) %}
+        </article>
+      {% endif %}
+    {% endfor %}
+  {% endfunc %}
+{% endstripspace %}
