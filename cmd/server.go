@@ -3,7 +3,9 @@ package cmd
 import (
 	"fmt"
 	"net/url"
+	"time"
 
+	"github.com/jtarchie/forum/cache"
 	"github.com/jtarchie/forum/db"
 	"github.com/jtarchie/forum/services"
 	"github.com/jtarchie/forum/templates"
@@ -37,8 +39,10 @@ func (c *ServerCmd) Run() error {
 		return fmt.Errorf("could not migrate: %w", err)
 	}
 
+	cachedForums := cache.NewFunc(services.ListForums, time.Minute)
+
 	e.GET("/", func(c echo.Context) error {
-		forums, err := services.ListForums(client)
+		forums, err := cachedForums.Invoke(client)
 		if err != nil {
 			return fmt.Errorf("could not load forums: %w", err)
 		}
