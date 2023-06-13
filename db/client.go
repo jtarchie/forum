@@ -42,13 +42,7 @@ func (c *Client) Execute(statement string, args ...interface{}) error {
 	return nil
 }
 
-type QueryResult interface {
-	Next() bool
-	NumRows() int64
-	Scan(dest ...interface{}) error
-}
-
-func (c *Client) Query(statement string, args ...interface{}) (QueryResult, error) {
+func (c *Client) Query(statement string, args ...interface{}) (*gorqlite.QueryResult, error) {
 	if len(args) == 0 {
 		rows, err := c.conn.QueryOne(statement)
 		if err != nil {
