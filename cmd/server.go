@@ -50,7 +50,7 @@ func (c *ServerCmd) Run() error {
 		logger.Debug("forums", zap.Reflect("forums", forums))
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTMLCharsetUTF8)
-		templates.WriteForums(c.Response(), forums)
+		templates.WriteListForums(c.Response(), forums)
 
 		return nil
 	})

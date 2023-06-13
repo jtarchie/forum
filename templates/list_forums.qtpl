@@ -1,7 +1,7 @@
 {% import "github.com/jtarchie/forum/services" %}
 
 {% stripspace %}
-  {% func Forums(forums services.Forums) %}
+  {% func ListForums(forums services.Forums) %}
   <!doctype html>
   <html lang="en">
     <head>
@@ -25,7 +25,6 @@
         <article>
           <header><a href="#">{%s forum.Name %}</a></header>
           {%s forum.Description %}
-          <!-- if children -->
           {%= listForums(forums, forum.ID) %}
         </article>
       {% endif %}

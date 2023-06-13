@@ -3,6 +3,7 @@ module github.com/jtarchie/forum
 go 1.20
 
 require (
+	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/alecthomas/kong v0.7.1
 	github.com/jtarchie/middleware v0.0.0-20230612135127-919a893fdb50
 	github.com/labstack/echo/v4 v4.10.2
@@ -14,6 +15,7 @@ require (
 )
 
 require (
+	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/gofrs/uuid v4.4.0+incompatible // indirect
