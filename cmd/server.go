@@ -15,7 +15,7 @@ import (
 )
 
 type ServerCmd struct {
-	Port     int      `help:"port to run http server"`
+	Port     int      `help:"port to run http server" default:"8080"`
 	DBServer *url.URL `help:"URL to the rqlite API" default:"http://localhost:4001"`
 }
 
