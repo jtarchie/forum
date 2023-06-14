@@ -10,3 +10,12 @@ it means it will be _eventually read_.
 brew bundle
 task
 ```
+
+## Deployment
+
+These will be instructions on how to deploy to [`fly`](https://fly.io).
+
+```bash
+fly launch
+fly deploy
+```
