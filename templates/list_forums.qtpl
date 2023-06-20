@@ -23,7 +23,7 @@
     {% for _, forum := range forums %}
       {% if forum.ParentID == parentID %}
         <article>
-          <header><a href="#">{%s forum.Name %}</a></header>
+          <header><a href="/forums/{%s Slug(forum.Name) %}-{%dl forum.ID %}">{%s forum.Name %}</a></header>
           {%s forum.Description %}
           {%= listForums(forums, forum.ID) %}
         </article>

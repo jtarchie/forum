@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/jtarchie/forum/cache"
@@ -53,6 +54,13 @@ func (c *ServerCmd) Run() error {
 		templates.WriteListForums(c.Response(), forums)
 
 		return nil
+	})
+
+	e.GET("/forums/:name", func(c echo.Context) error {
+		parts := strings.Split(c.Param("name"), "-")
+		id := parts[len(parts)-1]
+
+		return c.String(200, id)
 	})
 
 	return e.Start(fmt.Sprintf(":%d", c.Port))
