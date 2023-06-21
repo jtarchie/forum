@@ -1,17 +1,11 @@
 package services_test
 
 import (
-	"fmt"
-	"os"
-	"os/exec"
-
 	"github.com/jtarchie/forum/db"
 	"github.com/jtarchie/forum/services"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
-	"github.com/phayes/freeport"
 	"go.uber.org/zap"
 )
 
@@ -22,24 +16,7 @@ var _ = Describe("Migrations", func() {
 	)
 
 	BeforeEach(func() {
-		rqlitePath, err := os.MkdirTemp("", "")
-		Expect(err).ShouldNot(HaveOccurred())
-
-		port, err := freeport.GetFreePort()
-		Expect(err).ShouldNot(HaveOccurred())
-
-		rqliteCommand := exec.Command("rqlited",
-			"-node-id", fmt.Sprintf("namespace-%d", GinkgoParallelProcess()),
-			"-http-addr", fmt.Sprintf("localhost:%d", port),
-			rqlitePath,
-		)
-
-		rqliteSession, err = gexec.Start(rqliteCommand, GinkgoWriter, GinkgoWriter)
-		Expect(err).ShouldNot(HaveOccurred())
-		Eventually(rqliteSession.Err, "10s").Should(gbytes.Say("entering leader state"))
-
-		client, err = db.NewClient(fmt.Sprintf("http://localhost:%d", port))
-		Expect(err).ShouldNot(HaveOccurred())
+		rqliteSession, client = startRqlite()
 	})
 
 	AfterEach(func() {

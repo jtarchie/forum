@@ -1,3 +1,3 @@
 package templates
 
-//go:generate go run github.com/valyala/quicktemplate/qtc -dir=.
+//go:generate go run github.com/valyala/quicktemplate/qtc -dir=. -skipLineComments
