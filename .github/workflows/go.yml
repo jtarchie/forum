@@ -33,5 +33,11 @@ jobs:
         repo: go-task/task
         token: ${{ secrets.GITHUB_TOKEN }}
         cache: enable
+    - name: Install rqlite
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
+      with: # Grab the latest version
+        repo: rqlite/rqlite
+        token: ${{ secrets.GITHUB_TOKEN }}
+        cache: enable
     - name: Task
       run: task
