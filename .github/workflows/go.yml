@@ -38,6 +38,5 @@ jobs:
         curl -L https://github.com/rqlite/rqlite/releases/download/v7.20.6/rqlite-v7.20.6-linux-amd64.tar.gz -o rqlite-v7.20.6-linux-amd64.tar.gz
         tar xvfz rqlite-v7.20.6-linux-amd64.tar.gz
         echo "${PWD}/rqlite-v7.20.6-linux-amd64/" >> $GITHUB_PATH
-        which rqlited
     - name: Task
       run: task
