@@ -1,22 +1,23 @@
 {% import "github.com/jtarchie/forum/services" %}
+{% code
+  type ListForums struct {
+    forums services.Forums
+  }
+
+  func NewListForums(forums services.Forums) *ListForums {
+    return &ListForums{
+      forums: forums,
+    }
+  }
+%}
 
 {% stripspace %}
-  {% func ListForums(forums services.Forums) %}
-  <!doctype html>
-  <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-      <title>List Forums</title>
-    </head>
-    <body>
-      <main class="container">
-        <h1>List Forums</h1>
-        {%= listForums(forums, 0) %}
-      </main>
-    </body>
-  </html>
+  {% func (lf *ListForums) Title() %}
+    List Forums
+  {% endfunc %}
+  {% func (lf *ListForums) Body() %}
+    <h1>List Forums</h1>
+    {%= listForums(lf.forums, 0) %}
   {% endfunc %}
 
   {% func listForums(forums services.Forums, parentID int64) %}
