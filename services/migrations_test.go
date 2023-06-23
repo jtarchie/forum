@@ -38,6 +38,10 @@ var _ = Describe("Migrations", func() {
 			By("ensuring they are idempotent")
 			err = services.Migration(client, logger)
 			Expect(err).NotTo(HaveOccurred())
+
+			rerunResults, err := client.Query("SELECT * FROM migrations")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(rerunResults.NumRows()).To(Equal(results.NumRows()))
 		})
 	})
 })
