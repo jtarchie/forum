@@ -3,6 +3,7 @@ package services_test
 import (
 	"github.com/jtarchie/forum/db"
 	"github.com/jtarchie/forum/services"
+	"github.com/jtarchie/forum/test"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
@@ -16,7 +17,9 @@ var _ = Describe("Forums", func() {
 	)
 
 	BeforeEach(func() {
-		rqliteSession, client = startRqlite()
+		var err error
+		rqliteSession, client, err = test.StartLocalRQLite()
+		Expect(err).NotTo(HaveOccurred())
 	})
 
 	AfterEach(func() {

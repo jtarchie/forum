@@ -7,7 +7,8 @@ import (
 )
 
 type Client struct {
-	conn *gorqlite.Connection
+	conn     *gorqlite.Connection
+	hostname string
 }
 
 func NewClient(hostname string) (*Client, error) {
@@ -17,8 +18,13 @@ func NewClient(hostname string) (*Client, error) {
 	}
 
 	return &Client{
-		conn: conn,
+		conn:     conn,
+		hostname: hostname,
 	}, nil
+}
+
+func (c *Client) URL() string {
+	return c.hostname
 }
 
 func (c *Client) Execute(statement string, args ...interface{}) error {

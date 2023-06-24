@@ -60,7 +60,7 @@ var _ = Describe("Func", func() {
 				result, _ := cached.Invoke(100)
 
 				return result
-			}, "100ms").Should(Equal(1))
+			}, "50ms").Should(Equal(1))
 
 			Eventually(func() int {
 				result, _ := cached.Invoke(100)

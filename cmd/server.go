@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"net/url"
 	"strings"
 	"time"
 
@@ -16,8 +15,8 @@ import (
 )
 
 type ServerCmd struct {
-	Port     int      `help:"port to run http server" default:"8080"`
-	DBServer *url.URL `help:"URL to the rqlite API" default:"http://localhost:4001"`
+	Port     int    `help:"port to run http server" default:"8080"`
+	DBServer string `help:"URL to the rqlite API" default:"http://localhost:4001"`
 }
 
 func (c *ServerCmd) Run() error {
@@ -30,7 +29,7 @@ func (c *ServerCmd) Run() error {
 	e.Use(middleware.ZapLogger(logger))
 
 	// run migrations
-	client, err := db.NewClient(c.DBServer.String())
+	client, err := db.NewClient(c.DBServer)
 	if err != nil {
 		return fmt.Errorf("could create client: %w", err)
 	}
