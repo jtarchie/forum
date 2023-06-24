@@ -12,7 +12,7 @@ import (
 	"github.com/phayes/freeport"
 )
 
-func StartLocalRQLite() (*gexec.Session, *db.Client, error) {
+func StartLocalRQLite() (*gexec.Session, db.Client, error) {
 	rqlitePath, err := os.MkdirTemp("", "")
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not create temp directory: %w", err)

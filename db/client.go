@@ -6,28 +6,40 @@ import (
 	"github.com/rqlite/gorqlite"
 )
 
-type Client struct {
+type client struct {
 	conn     *gorqlite.Connection
 	hostname string
 }
 
-func NewClient(hostname string) (*Client, error) {
+type QueryResult interface {
+	Next() bool
+	Scan(...interface{}) error
+	NumRows() int64
+}
+
+type Client interface {
+	Execute(string, ...interface{}) error
+	Query(string, ...interface{}) (QueryResult, error)
+	URL() string
+}
+
+func NewClient(hostname string) (Client, error) {
 	conn, err := gorqlite.Open(hostname)
 	if err != nil {
 		return nil, fmt.Errorf("could not initialize client: %w", err)
 	}
 
-	return &Client{
+	return &client{
 		conn:     conn,
 		hostname: hostname,
 	}, nil
 }
 
-func (c *Client) URL() string {
+func (c *client) URL() string {
 	return c.hostname
 }
 
-func (c *Client) Execute(statement string, args ...interface{}) error {
+func (c *client) Execute(statement string, args ...interface{}) error {
 	if len(args) == 0 {
 		rows, err := c.conn.WriteOne(statement)
 		if err != nil {
@@ -48,7 +60,7 @@ func (c *Client) Execute(statement string, args ...interface{}) error {
 	return nil
 }
 
-func (c *Client) Query(statement string, args ...interface{}) (*gorqlite.QueryResult, error) {
+func (c *client) Query(statement string, args ...interface{}) (QueryResult, error) {
 	if len(args) == 0 {
 		rows, err := c.conn.QueryOne(statement)
 		if err != nil {

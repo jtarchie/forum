@@ -17,7 +17,7 @@ var migrationSQL string
 //go:embed assets/migrations/*.sql
 var migrations embed.FS
 
-func Migration(client *db.Client, logger *zap.Logger) error {
+func Migration(client db.Client, logger *zap.Logger) error {
 	err := client.Execute(migrationSQL)
 	if err != nil {
 		return fmt.Errorf("could not execute migrations: %w", err)

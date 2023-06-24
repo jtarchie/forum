@@ -16,7 +16,7 @@ type Forum struct {
 
 type Forums []Forum
 
-func ListForums(client *db.Client) (Forums, error) {
+func ListForums(client db.Client) (Forums, error) {
 	rows, err := client.Query("SELECT * FROM ordered_forums;")
 	if err != nil {
 		return nil, fmt.Errorf("could not read forums: %w", err)

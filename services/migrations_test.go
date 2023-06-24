@@ -12,7 +12,7 @@ import (
 
 var _ = Describe("Migrations", func() {
 	var (
-		client        *db.Client
+		client        db.Client
 		rqliteSession *gexec.Session
 	)
 

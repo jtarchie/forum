@@ -15,7 +15,7 @@ import (
 
 var _ = Describe("Server", func() {
 	var (
-		client        *db.Client
+		client        db.Client
 		rqliteSession *gexec.Session
 	)
 
