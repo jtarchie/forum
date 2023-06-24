@@ -32,7 +32,7 @@ func (c *sqlClient) URL() string {
 }
 
 func (c *sqlClient) Execute(statement string, args ...interface{}) error {
-	_, err := c.db.Exec(statement, args)
+	_, err := c.db.Exec(statement, args...)
 	if err != nil {
 		return fmt.Errorf("could not execute statement: %w", err)
 	}
@@ -41,9 +41,9 @@ func (c *sqlClient) Execute(statement string, args ...interface{}) error {
 }
 
 func (c *sqlClient) Query(statement string, args ...interface{}) (QueryResult, error) {
-	result, err := c.db.Query(statement, args)
+	result, err := c.db.Query(statement, args...)
 	if err != nil {
-		return nil, fmt.Errorf("could not execute statement: %w: %w", result.Err(), err)
+		return nil, fmt.Errorf("could not execute statement: %w", err)
 	}
 
 	return result, nil

@@ -3,27 +3,21 @@ package services_test
 import (
 	"github.com/jtarchie/forum/db"
 	"github.com/jtarchie/forum/services"
-	"github.com/jtarchie/forum/test"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/gexec"
 	"go.uber.org/zap"
 )
 
 var _ = Describe("Migrations", func() {
 	var (
-		client        db.Client
-		rqliteSession *gexec.Session
+		client db.Client
 	)
 
 	BeforeEach(func() {
 		var err error
-		rqliteSession, client, err = test.StartLocalRQLite()
-		Expect(err).NotTo(HaveOccurred())
-	})
 
-	AfterEach(func() {
-		rqliteSession.Kill()
+		client, err = db.NewClient("sqlite://")
+		Expect(err).NotTo(HaveOccurred())
 	})
 
 	When("migrations are run", func() {
