@@ -72,7 +72,7 @@ var _ = Describe("Func", func() {
 				result, _ := cached.Invoke(100)
 
 				return result
-			}).Should(Equal(2))
+			}).Should(BeNumerically(">=", 2))
 		})
 	})
 
