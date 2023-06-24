@@ -36,7 +36,12 @@ var _ = Describe("Migrations", func() {
 
 			results, err := client.Query("SELECT * FROM migrations")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(results.NumRows()).To(BeNumerically(">", 0))
+
+			count := 0
+			for results.Next() {
+				count++
+			}
+			Expect(count).To(BeNumerically(">", 0))
 
 			By("ensuring they are idempotent")
 			err = services.Migration(client, logger)
@@ -44,7 +49,12 @@ var _ = Describe("Migrations", func() {
 
 			rerunResults, err := client.Query("SELECT * FROM migrations")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(rerunResults.NumRows()).To(Equal(results.NumRows()))
+
+			postCount := 0
+			for rerunResults.Next() {
+				postCount++
+			}
+			Expect(postCount).To(Equal(count))
 		})
 	})
 })

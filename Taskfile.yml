@@ -22,4 +22,4 @@ tasks:
     - task: generate
     - task: lint
     - task: build
-    - go run github.com/onsi/ginkgo/v2/ginkgo -r -p --race --cover
+    - go run github.com/onsi/ginkgo/v2/ginkgo -r -p --race --cover --tags test

@@ -42,7 +42,12 @@ func Migration(client db.Client, logger *zap.Logger) error {
 			return fmt.Errorf("could not read migration %q: %w", version, err)
 		}
 
-		if rows.NumRows() == 0 {
+		count := 0
+		for rows.Next() {
+			count++
+		}
+
+		if count == 0 {
 			logger.Info("migration.missing", zap.String("version", version))
 
 			content, err := migrations.ReadFile(migration)
