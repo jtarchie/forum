@@ -2,19 +2,21 @@ package cmd
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 	"strings"
 	"time"
 
+	"github.com/gorilla/sessions"
 	"github.com/jtarchie/forum/cache"
 	"github.com/jtarchie/forum/db"
-	// "github.com/jtarchie/forum/gothic"
-	gothic "github.com/nabowler/echo-gothic"
+	"github.com/jtarchie/forum/gothic"
+	// gothic "github.com/nabowler/echo-gothic"
 	"github.com/jtarchie/forum/services"
 	"github.com/jtarchie/forum/templates"
-	"github.com/jtarchie/middleware"
+	customMiddleware "github.com/jtarchie/middleware"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/providers/github"
 	"go.uber.org/zap"
@@ -28,6 +30,7 @@ type ServerCmd struct {
 		Secret   string `help:"secret to the application" env:"GITHUB_SECRET"`
 		Callback string `help:"callback URL to the auth endpoint" env:"GITHUB_CALLBACK" default:"http://localhost:8080/auth/github/callback"`
 	} `embed:"" prefix:"github."`
+	SessionSecret string `help:"used to encrypt the session cookie" env:"SESSION_SECRET" required:""`
 }
 
 func (c *ServerCmd) Run() error {
@@ -43,7 +46,10 @@ func (c *ServerCmd) Run() error {
 	}
 
 	e := echo.New()
-	e.Use(middleware.ZapLogger(logger))
+	e.Use(middleware.Secure())
+	e.Use(middleware.CSRF())
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte(c.SessionSecret))))
+	e.Use(customMiddleware.ZapLogger(logger))
 
 	// run migrations
 	client, err := db.NewClient(c.DBServer)
@@ -64,11 +70,13 @@ func (c *ServerCmd) Run() error {
 			return fmt.Errorf("could not load forums: %w", err)
 		}
 
-		user, err := gothic.CompleteUserAuth(c)
-		logger.Error("user", zap.Reflect("user", user), zap.Error(err))
+		email, err := SessionGet[string]("email", c)
+		if err != nil {
+			return fmt.Errorf("could not access session: %w", err)
+		}
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTMLCharsetUTF8)
-		templates.WriteLayout(c.Response(), user, templates.NewListForums(forums))
+		templates.WriteLayout(c.Response(), email, templates.NewListForums(forums))
 
 		return nil
 	})
@@ -84,19 +92,26 @@ func (c *ServerCmd) Run() error {
 		// try to get the user without re-authenticating
 		user, err := gothic.CompleteUserAuth(c)
 		if err == nil {
-			t, _ := template.New("foo").Parse(userTemplate)
-			_ = t.Execute(c.Response(), user)
-		} else {
-			_ = gothic.BeginAuthHandler(c)
+			err = SessionPut("email", user.Email, c)
+			if err != nil {
+				return fmt.Errorf("could not persist user: %w", err)
+			}
+
+			return c.Redirect(http.StatusTemporaryRedirect, "/")
 		}
 
-		return nil
+		return gothic.BeginAuthHandler(c)
 	})
 
 	e.GET("/auth/:provider/callback", func(c echo.Context) error {
-		_, err := gothic.CompleteUserAuth(c)
+		user, err := gothic.CompleteUserAuth(c)
 		if err != nil {
 			return fmt.Errorf("could not complete auth: %w", err)
+		}
+
+		err = SessionPut("email", user.Email, c)
+		if err != nil {
+			return fmt.Errorf("could not persist user: %w", err)
 		}
 
 		return c.Redirect(http.StatusTemporaryRedirect, "/")
@@ -105,22 +120,19 @@ func (c *ServerCmd) Run() error {
 	e.GET("/auth/:provider/logout", func(c echo.Context) error {
 		_ = gothic.Logout(c)
 
+		sess, err := session.Get("session", c)
+		if err != nil {
+			return fmt.Errorf("could not load session: %w", err)
+		}
+
+		sess.Values["email"] = ""
+		err = sess.Save(c.Request(), c.Response())
+		if err != nil {
+			return fmt.Errorf("could not save session: %w", err)
+		}
+
 		return c.Redirect(http.StatusTemporaryRedirect, "/")
 	})
 
 	return e.Start(fmt.Sprintf(":%d", c.Port))
 }
-
-var userTemplate = `
-	<p><a href="/auth/{{.Provider}}/logout">logout</a></p>
-	<p>Name: {{.Name}} [{{.LastName}}, {{.FirstName}}]</p>
-	<p>Email: {{.Email}}</p>
-	<p>NickName: {{.NickName}}</p>
-	<p>Location: {{.Location}}</p>
-	<p>AvatarURL: {{.AvatarURL}} <img src="{{.AvatarURL}}"></p>
-	<p>Description: {{.Description}}</p>
-	<p>UserID: {{.UserID}}</p>
-	<p>AccessToken: {{.AccessToken}}</p>
-	<p>ExpiresAt: {{.ExpiresAt}}</p>
-	<p>RefreshToken: {{.RefreshToken}}</p>
-`

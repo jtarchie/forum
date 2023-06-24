@@ -1,5 +1,3 @@
-{% import "github.com/markbates/goth" %}
-
 {% interface
   Page {
     Title()
@@ -8,7 +6,7 @@
 %}
 
 {% stripspace %}
-{% func Layout(user goth.User, p Page) %}
+{% func Layout(email string, p Page) %}
   <!doctype html>
   <html lang="en">
     <head>
@@ -23,7 +21,7 @@
           <li><strong>Forum</strong></li>
         </ul>
         <ul>
-          {% if user.Provider == "" %}
+          {% if email == "" %}
           <li><a href="/auth/github/login">Github Login</a></li>
           {% else %}
           <li><a href="/auth/github/logout">Logout</a></li>
