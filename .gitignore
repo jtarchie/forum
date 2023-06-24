@@ -35,3 +35,4 @@ node*/
 forum
 *.qtpl.go
 fly.toml
+.env*
