@@ -5,19 +5,19 @@ go 1.20
 require (
 	github.com/DarthSim/overmind/v2 v2.4.0
 	github.com/PuerkitoBio/goquery v1.8.1
-	github.com/alecthomas/kong v0.7.1
+	github.com/alecthomas/kong v0.8.0
+	github.com/gorilla/sessions v1.2.1
 	github.com/gosimple/slug v1.13.1
 	github.com/imroc/req/v3 v3.37.1
 	github.com/jtarchie/middleware v0.0.0-20230612135127-919a893fdb50
+	github.com/labstack/echo-contrib v0.15.0
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/markbates/goth v1.77.0
 	github.com/mattn/go-sqlite3 v1.14.17
-	github.com/nabowler/echo-gothic v0.0.0-20210125020527-7a705746908f
 	github.com/onsi/ginkgo/v2 v2.11.0
 	github.com/onsi/gomega v1.27.8
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
 	github.com/rqlite/gorqlite v0.0.0-20230310040812-ec5e524a562e
-	github.com/valyala/quicktemplate v1.7.0
 	go.uber.org/zap v1.24.0
 )
 
@@ -38,13 +38,11 @@ require (
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/mux v1.6.2 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
-	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
-	github.com/labstack/echo-contrib v0.15.0 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/matoous/go-nanoid v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
