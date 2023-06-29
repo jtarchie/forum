@@ -48,10 +48,9 @@ require (
 	github.com/matoous/go-nanoid v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/nabowler/echo-gothic v0.0.0-20210125020527-7a705746908f // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
 	github.com/quic-go/qtls-go1-19 v0.3.2 // indirect
-	github.com/quic-go/qtls-go1-20 v0.3.0 // indirect
+	github.com/quic-go/qtls-go1-20 v0.2.2 // indirect
 	github.com/quic-go/quic-go v0.36.0 // indirect
 	github.com/refraction-networking/utls v1.3.2 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
