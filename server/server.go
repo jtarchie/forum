@@ -5,15 +5,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gorilla/sessions"
 	"github.com/jtarchie/forum/cache"
 	"github.com/jtarchie/forum/db"
 	"github.com/jtarchie/forum/services"
 	"github.com/jtarchie/forum/templates"
-	customMiddleware "github.com/jtarchie/middleware"
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
 )
 
@@ -37,10 +33,11 @@ func New(
 
 func (s *Server) Start(port int) error {
 	e := echo.New()
-	e.Use(middleware.Secure())
-	e.Use(middleware.CSRF())
-	e.Use(session.Middleware(sessions.NewCookieStore([]byte(s.sessionSecret))))
-	e.Use(customMiddleware.ZapLogger(s.logger))
+	setupMiddleware(
+		e,
+		s.logger,
+		s.sessionSecret,
+	)
 
 	cachedForums := cache.NewFunc(services.ListForums, time.Minute)
 
