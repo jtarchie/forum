@@ -9,7 +9,7 @@ require (
 	github.com/gorilla/sessions v1.2.1
 	github.com/gosimple/slug v1.13.1
 	github.com/imroc/req/v3 v3.37.2
-	github.com/jtarchie/middleware v0.0.0-20230716205315-27a1f1e226e7
+	github.com/jtarchie/middleware v0.0.0-20230726164819-024b740ad0d0
 	github.com/labstack/echo-contrib v0.15.0
 	github.com/labstack/echo/v4 v4.11.1
 	github.com/markbates/goth v1.77.0
