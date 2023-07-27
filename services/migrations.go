@@ -42,6 +42,8 @@ func Migration(client db.Client, logger *zap.Logger) error {
 			return fmt.Errorf("could not read migration %q: %w", version, err)
 		}
 
+		defer rows.Close()
+
 		count := 0
 		for rows.Next() {
 			count++
@@ -64,6 +66,8 @@ func Migration(client db.Client, logger *zap.Logger) error {
 			if err != nil {
 				return fmt.Errorf("could not set migration (%q): %w", migration, err)
 			}
+
+			logger.Info("migration.executed", zap.String("version", version))
 		} else {
 			logger.Info("migration.exists", zap.String("version", version))
 		}

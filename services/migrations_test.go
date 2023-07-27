@@ -30,6 +30,7 @@ var _ = Describe("Migrations", func() {
 
 			results, err := client.Query("SELECT * FROM migrations")
 			Expect(err).NotTo(HaveOccurred())
+			defer results.Close()
 
 			count := 0
 			for results.Next() {
@@ -43,6 +44,7 @@ var _ = Describe("Migrations", func() {
 
 			rerunResults, err := client.Query("SELECT * FROM migrations")
 			Expect(err).NotTo(HaveOccurred())
+			defer rerunResults.Close()
 
 			postCount := 0
 			for rerunResults.Next() {

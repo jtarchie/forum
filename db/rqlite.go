@@ -11,6 +11,14 @@ type rqlClient struct {
 	hostname string
 }
 
+type rqlQueryResult struct {
+	*gorqlite.QueryResult
+}
+
+func (q *rqlQueryResult) Close() error {
+	return nil
+}
+
 func NewRQLClient(hostname string) (Client, error) {
 	conn, err := gorqlite.Open(hostname)
 	if err != nil {
@@ -55,7 +63,7 @@ func (c *rqlClient) Query(statement string, args ...interface{}) (QueryResult, e
 			return nil, fmt.Errorf("could not query statement: %w: %w", rows.Err, err)
 		}
 
-		return &rows, nil
+		return &rqlQueryResult{&rows}, nil
 	}
 
 	rows, err := c.conn.QueryOneParameterized(gorqlite.ParameterizedStatement{
@@ -66,5 +74,5 @@ func (c *rqlClient) Query(statement string, args ...interface{}) (QueryResult, e
 		return nil, fmt.Errorf("could not query prepared statement: %w: %w", rows.Err, err)
 	}
 
-	return &rows, nil
+	return &rqlQueryResult{&rows}, nil
 }

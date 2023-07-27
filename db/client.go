@@ -8,6 +8,7 @@ import (
 type QueryResult interface {
 	Next() bool
 	Scan(...interface{}) error
+	Close() error
 }
 
 type Client interface {

@@ -22,6 +22,8 @@ func ListForums(client db.Client) (Forums, error) {
 		return nil, fmt.Errorf("could not read forums: %w", err)
 	}
 
+	defer rows.Close()
+
 	var forums Forums
 
 	for rows.Next() {

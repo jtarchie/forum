@@ -16,7 +16,7 @@ type sqlClient struct {
 }
 
 func NewSQLClient(hostname string) (Client, error) {
-	db, err := sql.Open("sqlite3", ":memory:")
+	db, err := sql.Open("sqlite3", "file::memory:?cache=shared")
 	if err != nil {
 		return nil, fmt.Errorf("could not initialize client: %w", err)
 	}
