@@ -6,6 +6,7 @@ require (
 	github.com/DarthSim/overmind/v2 v2.4.0
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/alecthomas/kong v0.8.0
+	github.com/dustinkirkland/golang-petname v0.0.0-20230626224747-e794b9370d49
 	github.com/gorilla/sessions v1.2.1
 	github.com/gosimple/slug v1.13.1
 	github.com/imroc/req/v3 v3.37.2
@@ -18,8 +19,7 @@ require (
 	github.com/onsi/gomega v1.27.10
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
 	github.com/rqlite/gorqlite v0.0.0-20230708021416-2acd02b70b79
-	github.com/valyala/quicktemplate v1.7.0
-	go.uber.org/zap v1.24.0
+	go.uber.org/zap v1.25.0
 )
 
 require (
@@ -27,7 +27,6 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/dustinkirkland/golang-petname v0.0.0-20230626224747-e794b9370d49 // indirect
 	github.com/gaukas/godicttls v0.0.3 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
@@ -60,7 +59,6 @@ require (
 	github.com/urfave/cli v1.22.14 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
